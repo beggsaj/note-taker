@@ -45,6 +45,11 @@ function addNote(body, textArray) {
     return note
 }
 
+app.post('/api/notes', (req, res) => {
+    const newNote = addNote(req.body, completeNotes)
+    res.json(newNote)
+})
+
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}`)
 })
