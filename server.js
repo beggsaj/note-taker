@@ -6,6 +6,9 @@ const app = express()
 const completeNotes = require('./Develop/db/db.json')
 const { text } = require('body-parser')
 
+const indexRoutes = require('./public/index.html');
+const notesRoutes = require('./public/notes.html');
+
 app.use(express.urlencoded({ extended:true }))
 app.use(express.json())
 app.use(express.static('public'))
@@ -15,15 +18,15 @@ app.get('/api/notes', (req,res) => {
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'))
+    res.sendFile(path.join(__dirname, indexRoutes))
 })
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/notes.html'))
+    res.sendFile(path.join(__dirname, notesRoutes))
 })
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'))
+    res.sendFile(path.join(__dirname, indexRoutes))
 })
 
 function addNote(body, textArray) {
