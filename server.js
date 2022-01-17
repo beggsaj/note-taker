@@ -39,7 +39,7 @@ function addNote(body, textArray) {
 
     textArray.push(note)
     fs.writeFile(
-        path.join(__dirname, './db/db.json')
+        path.join(__dirname, './db/db.json'),
         JSON.stringify(textArray, null, 2)
     )
     return note
