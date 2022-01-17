@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const app = express()
-const completeNotes = require('./db.json')
+const completeNotes = require('./Develop/db/db.json')
 const { text } = require('body-parser')
 
 
