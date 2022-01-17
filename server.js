@@ -15,15 +15,15 @@ app.get('/api/notes', (req,res) => {
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
+    res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, 'notes.html'))
+    res.sendFile(path.join(__dirname, '../public/notes.html'))
 })
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
+    res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
 function addNote(body, textArray) {
@@ -39,8 +39,9 @@ function addNote(body, textArray) {
 
     textArray.push(note)
     fs.writeFile(
-        path.join(__dirname, 'db.json'),
-        JSON.stringify(textArray, null, 2))
+        path.join(__dirname, './db/db.json'),
+        JSON.stringify(textArray, null, 2)
+    )
     return note
 }
 
