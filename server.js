@@ -1,56 +1,45 @@
-const PORT = process.env.PORT || 3001
-const fs = require('fs')
-const path = require('path')
 const express = require('express')
+const bodyParser = require('body-parser')
+
+const path = require('path')
+const util = require('util')
+const fs = require('fs')
+//const { v4: uuidv4 } = require('uuid')
+
+const apiRoot = '/api/notes';
+
 const app = express()
-const completeNotes = require('./Develop/db/db.json')
-const { text } = require('body-parser')
+app.use(bodyParser.json())
 
+const port = process.env.PORT || 3001
 
-app.use(express.urlencoded({ extended:true }))
-app.use(express.json())
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/api/notes', (req,res) => {
-    res.json(allNotes.slice(1))
-})
+const saveNote = require('./db/saveNote')
+
+const router = express.Router();
+router.get('/', (req, res) => {
+    saveNote
+    .retrieveNotes()
+    .then(notes => res.json(notes))
+    .catch(err => res.status(500).json(err))
+});
+router.post('/', (req, res) => {
+    saveNote
+        .addNote(req.body)
+        .then((note) => res.json(note))
+        .catch(err => res.status(500).json(err))
+});
+app.use(apiRoot, router);
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/index.html'))
-})
+    res.sendFile(path.join(__dirname, 'public/index.html'))
+});
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/notes.html'))
-})
+    res.sendFile(path.join(__dirname, 'public/notes.html'))
+});
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/index.html'))
-})
-
-function addNote(body, textArray) {
-    const note = body
-    if (!Array.isArray(textArray))
-    textArray = []
-
-    if(textArray.length === 0)
-    textArray.push(0)
-
-    body.id = textArray[0]
-    textArray[0]++
-
-    textArray.push(note)
-    fs.writeFile(
-        path.join(__dirname, './db/db.json'),
-        JSON.stringify(textArray, null, 2)
-    )
-    return note
-}
-
-app.post('/api/notes', (req, res) => {
-    const newNote = addNote(req.body, completeNotes)
-    res.json(newNote)
-})
-
-app.listen(PORT, () => {
-    console.log(`API server now on port ${PORT}`)
-})
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+});
