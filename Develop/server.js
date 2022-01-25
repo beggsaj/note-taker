@@ -1,3 +1,4 @@
+//dependencies
 const express = require('express')
 const bodyParser = require('body-parser')
 
@@ -7,7 +8,6 @@ const fs = require('fs')
 //const { v4: uuidv4 } = require('uuid')
 
 const apiRoot = '/api/notes';
-
 const app = express()
 app.use(bodyParser.json())
 
@@ -15,6 +15,7 @@ const port = process.env.PORT || 3001
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+//adding savenote file
 const saveNote = require('./db/saveNote')
 
 const router = express.Router();
